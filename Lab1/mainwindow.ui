@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>计算器-甄梓峰-2023414300226</string>
   </property>
   <property name="styleSheet">
    <string notr="true">/* 主窗口） */
@@ -64,22 +64,9 @@ QPushButton[text=&quot;.&quot;] {
     color: white;
 }
 
-/* 功能按钮 hover 效果 */
-QPushButton[text=&quot;%&quot;]:hover, 
-QPushButton[text=&quot;CE&quot;]:hover, 
-QPushButton[text=&quot;C&quot;]:hover, 
-QPushButton[text=&quot;←&quot;]:hover, 
-QPushButton[text=&quot;1/x&quot;]:hover, 
-QPushButton[text=&quot;x²&quot;]:hover, 
-QPushButton[text=&quot;√&quot;]:hover, 
-QPushButton[text=&quot;/&quot;]:hover, 
-QPushButton[text=&quot;×&quot;]:hover, 
-QPushButton[text=&quot;-&quot;]:hover, 
-QPushButton[text=&quot;+&quot;]:hover, 
-QPushButton[text=&quot;±&quot;]:hover, 
-QPushButton[text=&quot;=&quot;]:hover,
-QPushButton[text=&quot;.&quot;]:hover {
-    background-color: #e89919;
+QPushButton:pressed {
+    background-color:rgb(170, 0, 0);
+color:rgb(255, 255, 255)
 }</string>
   </property>
   <widget class="QWidget" name="centralwidget">
