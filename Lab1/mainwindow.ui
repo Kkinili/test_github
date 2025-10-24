@@ -7,11 +7,80 @@
     <x>0</x>
     <y>0</y>
     <width>450</width>
-    <height>257</height>
+    <height>396</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">/* 主窗口） */
+QWidget {
+    background-color: #f5f5f5;
+}
+
+/* 显示框 */
+QLineEdit {
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    padding: 6px;
+    font-size: 18px;
+    color: #333333;
+    text-align: right;
+}
+
+/* 按钮通用样式 */
+QPushButton {
+    background-color: #e6e6e6;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    padding: 12px;
+    font-size: 16px;
+    color: #333333;
+}
+
+/* 按钮 hover 效果 */
+QPushButton:hover {
+    background-color: #d9d9d9;
+}
+
+/* 功能按钮特殊样式 */
+QPushButton[text=&quot;%&quot;], 
+QPushButton[text=&quot;CE&quot;], 
+QPushButton[text=&quot;C&quot;], 
+QPushButton[text=&quot;←&quot;], 
+QPushButton[text=&quot;1/x&quot;], 
+QPushButton[text=&quot;x^2&quot;], 
+QPushButton[text=&quot;√&quot;], 
+QPushButton[text=&quot;/&quot;], 
+QPushButton[text=&quot;×&quot;], 
+QPushButton[text=&quot;-&quot;], 
+QPushButton[text=&quot;+&quot;], 
+QPushButton[text=&quot;±&quot;], 
+QPushButton[text=&quot;=&quot;],
+QPushButton[text=&quot;.&quot;] {
+    background-color: #f5a623;
+    color: white;
+}
+
+/* 功能按钮 hover 效果 */
+QPushButton[text=&quot;%&quot;]:hover, 
+QPushButton[text=&quot;CE&quot;]:hover, 
+QPushButton[text=&quot;C&quot;]:hover, 
+QPushButton[text=&quot;←&quot;]:hover, 
+QPushButton[text=&quot;1/x&quot;]:hover, 
+QPushButton[text=&quot;x²&quot;]:hover, 
+QPushButton[text=&quot;√&quot;]:hover, 
+QPushButton[text=&quot;/&quot;]:hover, 
+QPushButton[text=&quot;×&quot;]:hover, 
+QPushButton[text=&quot;-&quot;]:hover, 
+QPushButton[text=&quot;+&quot;]:hover, 
+QPushButton[text=&quot;±&quot;]:hover, 
+QPushButton[text=&quot;=&quot;]:hover,
+QPushButton[text=&quot;.&quot;]:hover {
+    background-color: #e89919;
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
