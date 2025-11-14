@@ -34,7 +34,8 @@ MainWindow::MainWindow(QWidget *parent)
         {Qt::Key_Enter, ui->btnEqual},       // 回车键 =
         {Qt::Key_Return, ui->btnEqual},      // 小键盘回车键 =
         {Qt::Key_Backspace, ui->btnDel},     // 退格键 ←
-        {Qt::Key_Delete, ui->btnClear}       // Delete键 C
+        {Qt::Key_C, ui->btnClear},       // Delete键 C
+        {Qt::Key_Delete, ui->btnPeriod}
     };
 
     connect(ui->btnPlus,SIGNAL(clicked()),this,SLOT(binBinaryOperatorClicked()));

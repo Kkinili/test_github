@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file>img/CodiconLayoutStatusbar.png</file>
+        <file>img/FadSaveas.png</file>
+        <file>img/IcBaselineContentCopy.png</file>
+        <file>img/IcBaselineContentCut.png</file>
+        <file>img/IcBaselineContentPaste.png</file>
+        <file>img/IcBaselineCreateNewFolder.png</file>
+        <file>img/IcBaselineDownload.png</file>
+        <file>img/IcBaselineFileOpen.png</file>
+        <file>img/IcBaselineFindInPage.png</file>
+        <file>img/IcBaselineFindReplace.png</file>
+        <file>img/IcBaselineFontDownload.png</file>
+        <file>img/IcBaselineRedo.png</file>
+        <file>img/IcBaselineTextSnippet.png</file>
+        <file>img/IcBaselineUndo.png</file>
+        <file>img/MingcuteSave2Line.png</file>
+        <file>img/RiTextWrap.png</file>
+        <file>img/TablerTool.png</file>
+    </qresource>
+</RCC>
