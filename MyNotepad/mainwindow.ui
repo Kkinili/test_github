@@ -74,7 +74,7 @@
     <property name="title">
      <string>格式(&amp;O)</string>
     </property>
-    <addaction name="actionWordWrap"/>
+    <addaction name="actionLineWrap"/>
     <addaction name="actionShowLineNumber"/>
     <addaction name="actionFont"/>
     <addaction name="actionFontColor"/>
@@ -128,7 +128,7 @@
    <addaction name="separator"/>
    <addaction name="actionFont"/>
    <addaction name="actionShowLineNumber"/>
-   <addaction name="actionWordWrap"/>
+   <addaction name="actionLineWrap"/>
    <addaction name="separator"/>
    <addaction name="actionToolBar"/>
    <addaction name="actionStatusBar"/>
@@ -336,7 +336,7 @@
     <enum>QAction::MenuRole::NoRole</enum>
    </property>
   </action>
-  <action name="actionWordWrap">
+  <action name="actionLineWrap">
    <property name="checkable">
     <bool>true</bool>
    </property>
