@@ -22,7 +22,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>96</height>
+       <height>106</height>
       </size>
      </property>
     </spacer>
@@ -30,11 +30,11 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="btDepartment">
        <property name="minimumSize">
         <size>
-         <width>80</width>
-         <height>80</height>
+         <width>40</width>
+         <height>60</height>
         </size>
        </property>
        <property name="text">
@@ -49,8 +49,8 @@
       <widget class="QPushButton" name="btDoctor">
        <property name="minimumSize">
         <size>
-         <width>80</width>
-         <height>80</height>
+         <width>40</width>
+         <height>60</height>
         </size>
        </property>
        <property name="text">
@@ -62,8 +62,8 @@
       <widget class="QPushButton" name="btPatient">
        <property name="minimumSize">
         <size>
-         <width>80</width>
-         <height>80</height>
+         <width>40</width>
+         <height>60</height>
         </size>
        </property>
        <property name="maximumSize">
@@ -87,7 +87,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>96</height>
+       <height>106</height>
       </size>
      </property>
     </spacer>
