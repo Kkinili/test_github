@@ -30,7 +30,7 @@
    <item>
     <widget class="QLabel" name="label_3">
      <property name="text">
-      <string>欢迎使用诊断测试系统</string>
+      <string>欢迎使用诊疗测试系统</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -85,7 +85,11 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLineEdit" name="inputUserPassword"/>
+        <widget class="QLineEdit" name="inputUserPassword">
+         <property name="echoMode">
+          <enum>QLineEdit::EchoMode::Password</enum>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>

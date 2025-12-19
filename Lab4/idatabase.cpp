@@ -1,4 +1,5 @@
 #include "idatabase.h"
+#include <QUuid>
 
 void IDatabase::ininDatabase()
 {
@@ -12,6 +13,7 @@ void IDatabase::ininDatabase()
         qDebug() << "open database is ok";
 }
 
+
 bool IDatabase::initPatientModel()
 {
     patientTabModel = new QSqlTableModel(this, database);
@@ -24,6 +26,22 @@ bool IDatabase::initPatientModel()
     thePatientSelection = new QItemSelectionModel(patientTabModel);
     return true;
 }
+
+int IDatabase::addNewPatient()
+{
+    patientTabModel->insertRow(patientTabModel->rowCount(),QModelIndex());//在末尾添加一个记录
+    QModelIndex curIndex = patientTabModel->index(patientTabModel->rowCount() - 1,1);//创建最后一行的ModelIndex
+
+    int curRecNo = curIndex.row();
+    QSqlRecord curRec = patientTabModel->record(curRecNo);//获取当前记录
+    curRec.setValue("CREATEDTIMESTAMP", QDateTime :: currentDateTime().toString("yyyy-MM-dd"));
+    curRec.setValue("ID", QUuid :: createUuid().toString(QUuid :: WithoutBraces));
+
+    patientTabModel->setRecord(curRecNo, curRec);
+
+    return curIndex.row();
+}
+
 
 bool IDatabase::searchPatient(QString filter)
 {
@@ -51,6 +69,7 @@ bool IDatabase::deleteCurrentPatient()
         return false;
     }
 }
+
 
 bool IDatabase::submitPatientEdit()
 {
