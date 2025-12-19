@@ -12,6 +12,56 @@ void IDatabase::ininDatabase()
         qDebug() << "open database is ok";
 }
 
+bool IDatabase::initPatientModel()
+{
+    patientTabModel = new QSqlTableModel(this, database);
+    patientTabModel->setTable("patient");
+    patientTabModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    patientTabModel->setSort(patientTabModel->fieldIndex("name"), Qt::AscendingOrder);
+    if(!(patientTabModel->select()))
+        return false;
+
+    thePatientSelection = new QItemSelectionModel(patientTabModel);
+    return true;
+}
+
+bool IDatabase::searchPatient(QString filter)
+{
+    patientTabModel->setFilter(filter);
+    return patientTabModel->select();
+}
+
+bool IDatabase::deleteCurrentPatient()
+{
+    // 检查选择模型和当前索引是否有效
+    if (!thePatientSelection || !thePatientSelection->currentIndex().isValid()) {
+        qDebug() << "未选中任何患者，无法删除";
+        return false;
+    }
+
+    QModelIndex curIndex = thePatientSelection->currentIndex();
+    // 尝试删除行
+    if (patientTabModel->removeRow(curIndex.row())) {
+        patientTabModel->submitAll(); // 提交更改到数据库
+        patientTabModel->select();    // 重新查询以刷新表格
+        qDebug() << "删除成功";
+        return true;
+    } else {
+        qDebug() << "删除失败";
+        return false;
+    }
+}
+
+bool IDatabase::submitPatientEdit()
+{
+    return patientTabModel->submitAll();
+}
+
+void IDatabase::revertPatientEdit()
+{
+    patientTabModel->revertAll();
+}
+
 QString IDatabase::userLogin(QString userName, QString password)
 {
     QSqlQuery query;
