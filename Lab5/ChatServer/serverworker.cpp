@@ -14,6 +14,16 @@ bool ServerWorker::setSocketDescriptor(qintptr socketDescriptor)
     return m_serverSocket->setSocketDescriptor(socketDescriptor);
 }
 
+QString ServerWorker::userName()
+{
+    return m_userName;
+}
+
+void ServerWorker::setUserName(QString user)
+{
+    m_userName = user;
+}
+
 void ServerWorker::onReadyRead()
 {
     QByteArray jsonData;
@@ -24,8 +34,19 @@ void ServerWorker::onReadyRead()
         socketStream.startTransaction();
         socketStream>>jsonData;
         if(socketStream.commitTransaction()){
-            emit logMessage(QString::fromUtf8(jsonData));
-            sendMessage("I recieved message");
+//           emit logMessage(QString::fromUtf8(jsonData));
+//           sendMessage("I recieved message");
+
+            QJsonParseError parseError;
+            const QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData, &parseError);
+            if(parseError.error == QJsonParseError::NoError){
+
+                if(jsonDoc.isObject()){// and is a JSON object
+                    emit logMessage(QJsonDocument(jsonDoc).toJson(QJsonDocument::Compact));
+                    emit jsonReceived(this, jsonDoc.object());// pares the Json
+                }
+            }
+
         }else{
             break;
         }
@@ -47,4 +68,13 @@ void ServerWorker::sendMessage(const QString &text, const QString &type)
 
         serverStream << QJsonDocument(message).toJson();
     }
+}
+
+void ServerWorker::sendJson(const QJsonObject &json)
+{
+    const QByteArray jsonData = QJsonDocument(json).toJson(QJsonDocument::Compact);
+    emit logMessage(QLatin1String("Sending to ") + userName() + QLatin1String(" - ") + QString::fromUtf8(jsonData));
+    QDataStream socketStream(m_serverSocket);
+    socketStream.setVersion(QDataStream::Qt_6_9);
+    socketStream << jsonData;
 }
