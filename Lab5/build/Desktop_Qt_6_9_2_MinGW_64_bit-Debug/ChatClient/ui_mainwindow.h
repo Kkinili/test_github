@@ -52,8 +52,8 @@ public:
     QGridLayout *gridLayout;
     QLabel *label_2;
     QLineEdit *serverEdit;
-    QLabel *usernameEdit;
-    QLineEdit *lineEdit_2;
+    QLabel *label;
+    QLineEdit *usernameEdit;
     QSpacerItem *verticalSpacer;
     QPushButton *loginButton;
     QSpacerItem *horizontalSpacer_2;
@@ -165,15 +165,15 @@ public:
 
         gridLayout->addWidget(serverEdit, 0, 1, 1, 1);
 
-        usernameEdit = new QLabel(loginFrame);
+        label = new QLabel(loginFrame);
+        label->setObjectName("label");
+
+        gridLayout->addWidget(label, 1, 0, 1, 1);
+
+        usernameEdit = new QLineEdit(loginFrame);
         usernameEdit->setObjectName("usernameEdit");
 
-        gridLayout->addWidget(usernameEdit, 1, 0, 1, 1);
-
-        lineEdit_2 = new QLineEdit(loginFrame);
-        lineEdit_2->setObjectName("lineEdit_2");
-
-        gridLayout->addWidget(lineEdit_2, 1, 1, 1, 1);
+        gridLayout->addWidget(usernameEdit, 1, 1, 1, 1);
 
 
         verticalLayout_2->addLayout(gridLayout);
@@ -220,8 +220,8 @@ public:
         logoutButton->setText(QCoreApplication::translate("MainWindow", "\351\200\200\345\207\272", nullptr));
         label_2->setText(QCoreApplication::translate("MainWindow", "\346\234\215\345\212\241\345\231\250\345\234\260\345\235\200", nullptr));
         serverEdit->setText(QCoreApplication::translate("MainWindow", "127.0.0.1", nullptr));
-        usernameEdit->setText(QCoreApplication::translate("MainWindow", "\346\230\265\347\247\260", nullptr));
-        lineEdit_2->setText(QCoreApplication::translate("MainWindow", "Kkinili", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "\346\230\265\347\247\260", nullptr));
+        usernameEdit->setText(QCoreApplication::translate("MainWindow", "Kkinili", nullptr));
         loginButton->setText(QCoreApplication::translate("MainWindow", "\347\231\273\345\275\225\350\201\212\345\244\251\345\256\244", nullptr));
     } // retranslateUi
 
