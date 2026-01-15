@@ -40,4 +40,4 @@ void DepartmentEditView::on_btCancel_clicked()
     IDatabase::getInstance().revertDepartmentEdit();
     emit goPreviousView();
 }
-//123456
+//123456789
