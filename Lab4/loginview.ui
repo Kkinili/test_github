@@ -169,6 +169,16 @@
      </property>
     </spacer>
    </item>
+   <item>
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>甄梓峰 2023414300226</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>

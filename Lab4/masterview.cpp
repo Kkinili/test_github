@@ -45,6 +45,8 @@ void MasterView::goDoctorView()
     qDebug()<<"goDoctorView";
     doctorView = new DoctorView(this);
     pushWidgetToStackView(doctorView);
+
+    connect(doctorView, SIGNAL(goDoctorEditView(int)), this, SLOT(goDoctorEditView(int)));
 }
 
 void MasterView::goDepartmentView()
@@ -52,6 +54,8 @@ void MasterView::goDepartmentView()
     qDebug()<<"goDepartmentView";
     departmentView = new DepartmentView(this);
     pushWidgetToStackView(departmentView);
+
+    connect(departmentView, SIGNAL(goDepartmentEditView(int)), this, SLOT(goDepartmentEditView(int)));
 }
 
 void MasterView::goPatientEditView(int rowNo)
@@ -61,6 +65,24 @@ void MasterView::goPatientEditView(int rowNo)
     pushWidgetToStackView(patientEditView);
 
     connect(patientEditView, SIGNAL(goPreviousView()), this, SLOT(goPreviousView()));
+}
+
+void MasterView::goDoctorEditView(int rowNo)
+{
+    qDebug()<<"goDoctorEditView";
+    doctorEditView = new DoctorEditView(this, rowNo);
+    pushWidgetToStackView(doctorEditView);
+
+    connect(doctorEditView, SIGNAL(goPreviousView()), this, SLOT(goPreviousView()));
+}
+
+void MasterView::goDepartmentEditView(int rowNo)
+{
+    qDebug()<<"goDepartmentEditView";
+    departmentEditView = new DepartmentEditView(this, rowNo);
+    pushWidgetToStackView(departmentEditView);
+
+    connect(departmentEditView, SIGNAL(goPreviousView()), this, SLOT(goPreviousView()));
 }
 
 void MasterView::goPatientView()
@@ -125,4 +147,3 @@ void MasterView::on_btLogout_clicked()
 {
     goPreviousView();
 }
-

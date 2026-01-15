@@ -2,12 +2,14 @@
 #define MASTERVIEW_H
 
 #include <QWidget>
-#include"loginview.h"
-#include"doctorview.h"
-#include"departmentview.h"
-#include"patienteditview.h"
-#include"patientview.h"
-#include"welcomeview.h"
+#include "loginview.h"
+#include "doctorview.h"
+#include "doctoreditview.h"
+#include "departmentview.h"
+#include "departmenteditview.h"
+#include "patienteditview.h"
+#include "patientview.h"
+#include "welcomeview.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -29,6 +31,8 @@ public slots:
     void goDoctorView();
     void goDepartmentView();
     void goPatientEditView(int rowNo);
+    void goDoctorEditView(int rowNo);
+    void goDepartmentEditView(int rowNo);
     void goPatientView();
     void goPreviousView();
 
@@ -46,8 +50,10 @@ private:
 
     WelcomeView *welcomeView;
     DoctorView *doctorView;
+    DoctorEditView *doctorEditView;
     PatientView *patientView;
     DepartmentView *departmentView;
+    DepartmentEditView *departmentEditView;
     LoginView *loginView;
     PatientEditView *patientEditView;
 

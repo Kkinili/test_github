@@ -31,6 +31,7 @@ private:
 signals:
 
 public:
+    // 患者管理
     bool initPatientModel();
     int addNewPatient();
     bool searchPatient(QString filter);
@@ -40,6 +41,28 @@ public:
 
     QSqlTableModel  *patientTabModel;
     QItemSelectionModel *thePatientSelection;
+
+    // 医生管理
+    bool initDoctorModel();
+    int addNewDoctor();
+    bool searchDoctor(QString filter);
+    bool deleteCurrentDoctor();
+    bool submitDoctorEdit();
+    void revertDoctorEdit();
+
+    QSqlTableModel  *doctorTabModel;
+    QItemSelectionModel *theDoctorSelection;
+
+    // 科室管理
+    bool initDepartmentModel();
+    int addNewDepartment();
+    bool searchDepartment(QString filter);
+    bool deleteCurrentDepartment();
+    bool submitDepartmentEdit();
+    void revertDepartmentEdit();
+
+    QSqlTableModel  *departmentTabModel;
+    QItemSelectionModel *theDepartmentSelection;
 
 };
 

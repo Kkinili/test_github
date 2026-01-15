@@ -2,6 +2,7 @@
 #include "ui_patienteditview.h"
 #include "idatabase.h"
 #include <QSqlTableModel>
+#include <QDate>
 
 PatientEditView::PatientEditView(QWidget *parent, int index)
     : QWidget(parent)
@@ -10,9 +11,9 @@ PatientEditView::PatientEditView(QWidget *parent, int index)
     ui->setupUi(this);
 
     dataMapper = new QDataWidgetMapper();
-    QSqlTableModel *tabModel = IDatabase :: getInstance().patientTabModel;
-    dataMapper->setModel(IDatabase :: getInstance().patientTabModel);
-    dataMapper->setSubmitPolicy(QDataWidgetMapper :: AutoSubmit);
+    QSqlTableModel *tabModel = IDatabase::getInstance().patientTabModel;
+    dataMapper->setModel(IDatabase::getInstance().patientTabModel);
+    dataMapper->setSubmitPolicy(QDataWidgetMapper::AutoSubmit);
 
     dataMapper->addMapping(ui->dbEditID, tabModel->fieldIndex("ID"));
     dataMapper->addMapping(ui->dbEditName, tabModel->fieldIndex("NAME"));
@@ -25,6 +26,9 @@ PatientEditView::PatientEditView(QWidget *parent, int index)
     dataMapper->addMapping(ui->dbCreatedTimeStamp, tabModel->fieldIndex("CREATEDTIMESTAMP"));
 
     dataMapper->setCurrentIndex(index);
+
+    ui->dbEditID->setEnabled(false);
+    ui->dbCreatedTimeStamp->setEnabled(false);
 }
 
 PatientEditView::~PatientEditView()
@@ -34,16 +38,30 @@ PatientEditView::~PatientEditView()
 
 void PatientEditView::on_pushButton_clicked()
 {
-    IDatabase::getInstance().submitPatientEdit();
+    // 先提交mapper中的数据，确保DOB等字段正确同步到模型
+    dataMapper->submit();
 
+    // 保存前根据DOB自动计算AGE
+    QDate dob = ui->dbDateEditDOB->date();
+    if (dob.isValid()) {
+        int age = QDate::currentDate().year() - dob.year();
+        // 如果今年还没过生日，年龄减1
+        if (QDate::currentDate().month() < dob.month() ||
+            (QDate::currentDate().month() == dob.month() && QDate::currentDate().day() < dob.day())) {
+            age--;
+        }
+        // 直接设置模型中的AGE字段
+        int ageFieldIndex = IDatabase::getInstance().patientTabModel->fieldIndex("AGE");
+        IDatabase::getInstance().patientTabModel->setData(
+            IDatabase::getInstance().patientTabModel->index(dataMapper->currentIndex(), ageFieldIndex), age);
+    }
+
+    IDatabase::getInstance().submitPatientEdit();
     emit goPreviousView();
 }
-
 
 void PatientEditView::on_pushButton_2_clicked()
 {
-    IDatabase:: getInstance() .revertPatientEdit();
-
+    IDatabase::getInstance().revertPatientEdit();
     emit goPreviousView();
 }
-

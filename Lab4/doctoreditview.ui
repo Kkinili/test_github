@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DoctorEditView</class>
+ <widget class="QWidget" name="DoctorEditView">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>350</width>
+    <height>200</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>医生信息编辑</string>
+  </property>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
+    <widget class="QLabel" name="labelID">
+     <property name="text">
+      <string>编号：</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="dbEditID"/>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="labelName">
+     <property name="text">
+      <string>姓名：</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QLineEdit" name="dbEditName"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="labelEmployeeNo">
+     <property name="text">
+      <string>工号：</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="dbEditEmployeeNo"/>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="labelDepartmentId">
+     <property name="text">
+      <string>科室ID：</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLineEdit" name="dbEditDepartmentId"/>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="btSave">
+       <property name="text">
+        <string>保存</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btCancel">
+       <property name="text">
+        <string>取消</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
