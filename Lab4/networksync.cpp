@@ -395,3 +395,4 @@ QList<DiagnosisStandard> NetSync::getLocalDiagnoses() const
 {
     return localDiagnoses;
 }
+//1
