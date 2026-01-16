@@ -12,12 +12,13 @@ class AppointmentEditView : public QWidget
     Q_OBJECT
 
 public:
-    explicit AppointmentEditView(QWidget *parent = nullptr, int row=0);
+    explicit AppointmentEditView(QWidget *parent = nullptr, int row = -1);
     ~AppointmentEditView();
 
 private slots:
     void on_btSave_clicked();
     void on_btCancel_clicked();
+    void on_btCreateRecord_clicked();
 
 private:
     Ui::AppointmentEditView *ui;
@@ -26,6 +27,7 @@ private:
 
 signals:
     void goPreviousView();
+    void goCreateRecordView(int row);
 };
 
 #endif // APPOINTMENTEDITVIEW_H

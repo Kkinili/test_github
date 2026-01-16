@@ -149,7 +149,10 @@ void MasterView::goAppointmentEditView(int rowNo)
     appointmentEditView = new AppointmentEditView(this, rowNo);
     pushWidgetToStackView(appointmentEditView);
 
+    // 连接返回信号
     connect(appointmentEditView, SIGNAL(goPreviousView()), this, SLOT(goPreviousView()));
+    // 连接创建就诊记录信号
+    connect(appointmentEditView, SIGNAL(goCreateRecordView(int)), this, SLOT(goRecordEditView(int)));
 }
 
 void MasterView::goPreviousView()

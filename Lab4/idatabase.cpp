@@ -32,6 +32,15 @@ void IDatabase::ininDatabase()
                "status VARCHAR(20), "
                "notes TEXT)");
 
+    // 创建处方明细表（用于存储就诊时的药品处方信息）
+    query.exec("CREATE TABLE IF NOT EXISTS prescriptions ("
+               "id INTEGER PRIMARY KEY, "
+               "record_id VARCHAR(50), "
+               "drug_name VARCHAR(50) NOT NULL, "
+               "quantity INTEGER NOT NULL, "
+               "unit_price DECIMAL(10,2), "
+               "prescribed_at DATETIME DEFAULT CURRENT_TIMESTAMP)");
+
     // 初始化所有数据模型
     initPatientModel();
     initDoctorModel();

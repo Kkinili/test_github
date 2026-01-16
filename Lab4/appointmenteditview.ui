@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>350</height>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -85,6 +85,16 @@
     </layout>
    </item>
    <item>
+    <widget class="QPushButton" name="btCreateRecord">
+     <property name="text">
+      <string>创建就诊记录</string>
+     </property>
+     <property name="toolTip">
+      <string>根据此预约创建一条就诊记录</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -92,7 +102,7 @@
      <property name="sizeHint" stdset="0">
       <size>
        <width>20</width>
-       <height>40</height>
+       <height>10</height>
       </size>
      </property>
     </spacer>
