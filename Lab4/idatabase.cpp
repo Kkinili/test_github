@@ -11,10 +11,12 @@ void IDatabase::ininDatabase()
         qDebug() << "failed to open database";
     }else
         qDebug() << "open database is ok";
-    // 注意：数据库表已经存在，不需要重复创建
-    // Doctor表和Department表结构如下：
-    // Doctor: ID, EMPLOYEENO, NAME, DEPARTMENT_ID
-    // Department: ID, NAME
+
+    // 初始化所有数据模型
+    initPatientModel();
+    initDoctorModel();
+    initDepartmentModel();
+    initRecordModel();
 }
 
 
@@ -212,6 +214,96 @@ bool IDatabase::submitDepartmentEdit()
 void IDatabase::revertDepartmentEdit()
 {
     departmentTabModel->revertAll();
+}
+
+// ==================== 就诊记录管理模块实现 ====================
+
+bool IDatabase::initRecordModel()
+{
+    recordTabModel = new QSqlTableModel(this, database);
+    recordTabModel->setTable("MedicalRecord");
+    recordTabModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    recordTabModel->setSort(recordTabModel->fieldIndex("VISIT_DATE"), Qt::DescendingOrder);
+    if(!(recordTabModel->select()))
+        return false;
+
+    theRecordSelection = new QItemSelectionModel(recordTabModel);
+    return true;
+}
+
+int IDatabase::addNewRecord()
+{
+    // 计算要插入的行号（最后一行之后）
+    int newRow = recordTabModel->rowCount();
+    recordTabModel->insertRow(newRow, QModelIndex());
+
+    QSqlRecord curRec = recordTabModel->record(newRow);
+    // 设置默认就诊日期为当前时间
+    curRec.setValue("VISIT_DATE", QDateTime::currentDateTime());
+    curRec.setValue("STATUS", 0);  // 0: 进行中
+
+    recordTabModel->setRecord(newRow, curRec);
+
+    return newRow;
+}
+
+bool IDatabase::searchRecord(QString filter)
+{
+    recordTabModel->setFilter(filter);
+    return recordTabModel->select();
+}
+
+bool IDatabase::deleteCurrentRecord()
+{
+    if (!theRecordSelection || !theRecordSelection->currentIndex().isValid()) {
+        qDebug() << "未选中任何记录，无法删除";
+        return false;
+    }
+
+    QModelIndex curIndex = theRecordSelection->currentIndex();
+    if (recordTabModel->removeRow(curIndex.row())) {
+        recordTabModel->submitAll();
+        recordTabModel->select();
+        qDebug() << "删除记录成功";
+        return true;
+    } else {
+        qDebug() << "删除记录失败";
+        return false;
+    }
+}
+
+bool IDatabase::submitRecordEdit()
+{
+    return recordTabModel->submitAll();
+}
+
+void IDatabase::revertRecordEdit()
+{
+    recordTabModel->revertAll();
+}
+
+QString IDatabase::getPatientNameById(int patientId)
+{
+    QSqlQuery query;
+    query.prepare("SELECT NAME FROM Patient WHERE ID = :ID");
+    query.bindValue(":ID", patientId);
+    query.exec();
+    if (query.next()) {
+        return query.value("NAME").toString();
+    }
+    return "";
+}
+
+QString IDatabase::getDoctorNameById(int doctorId)
+{
+    QSqlQuery query;
+    query.prepare("SELECT NAME FROM Doctor WHERE ID = :ID");
+    query.bindValue(":ID", doctorId);
+    query.exec();
+    if (query.next()) {
+        return query.value("NAME").toString();
+    }
+    return "";
 }
 
 QString IDatabase::userLogin(QString userName, QString password)

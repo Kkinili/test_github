@@ -64,6 +64,22 @@ public:
     QSqlTableModel  *departmentTabModel;
     QItemSelectionModel *theDepartmentSelection;
 
+    // 就诊记录管理
+    bool initRecordModel();
+    int addNewRecord();
+    bool searchRecord(QString filter);
+    bool deleteCurrentRecord();
+    bool submitRecordEdit();
+    void revertRecordEdit();
+
+    // 获取患者名称（用于显示）
+    QString getPatientNameById(int patientId);
+    // 获取医生名称（用于显示）
+    QString getDoctorNameById(int doctorId);
+
+    QSqlTableModel  *recordTabModel;
+    QItemSelectionModel *theRecordSelection;
+
 };
 
 #endif // IDATABASE_H

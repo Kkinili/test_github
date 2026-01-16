@@ -38,6 +38,7 @@ void MasterView::goWelcomeView()
     connect(welcomeView, SIGNAL(goDoctorView()), this, SLOT(goDoctorView()));
     connect(welcomeView, SIGNAL(goPatientView()), this, SLOT(goPatientView()));
     connect(welcomeView, SIGNAL(goDepartmentView()), this, SLOT(goDepartmentView()));
+    connect(welcomeView, SIGNAL(goRecordView()), this, SLOT(goRecordView()));
 }
 
 void MasterView::goDoctorView()
@@ -94,17 +95,45 @@ void MasterView::goPatientView()
     connect(patientView, SIGNAL(goPatientEditView(int)), this, SLOT(goPatientEditView(int)));
 }
 
+void MasterView::goRecordView()
+{
+    qDebug()<<"goRecordView";
+    recordView = new RecordView(this);
+    pushWidgetToStackView(recordView);
+
+    connect(recordView, SIGNAL(goRecordEditView(int)), this, SLOT(goRecordEditView(int)));
+}
+
+void MasterView::goRecordEditView(int rowNo)
+{
+    qDebug()<<"goRecordEditView";
+    recordEditView = new RecordEditView(this, rowNo);
+    pushWidgetToStackView(recordEditView);
+
+    connect(recordEditView, SIGNAL(goPreviousView()), this, SLOT(goPreviousView()));
+}
+
 void MasterView::goPreviousView()
 {
+    qDebug() << "goPreviousView 被调用";
     int count = ui->stackedWidget->count();
+    qDebug() << "当前堆栈中的widget数量:" << count;
 
     if(count > 1){
+        qDebug() << "切换到上一个界面";
         ui->stackedWidget->setCurrentIndex(count - 2);
         ui->labelTitle->setText(ui->stackedWidget->currentWidget()->windowTitle());
 
         QWidget *widget = ui->stackedWidget->widget(count - 1);
         ui->stackedWidget->removeWidget(widget);
         delete widget;
+
+        // 刷新当前视图（如果有的话）
+        if (ui->stackedWidget->currentWidget()) {
+            ui->stackedWidget->currentWidget()->repaint();
+        }
+    } else {
+        qDebug() << "堆栈中只有一个widget，无法返回";
     }
 }
 
