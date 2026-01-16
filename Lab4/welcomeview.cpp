@@ -49,3 +49,8 @@ void WelcomeView::on_btAppointment_clicked()
     emit goAppointmentView();
 }
 
+void WelcomeView::on_btStatistics_clicked()
+{
+    emit goStatisticsView();
+}
+

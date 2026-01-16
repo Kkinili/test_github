@@ -1,4 +1,4 @@
-QT       += core gui sql
+QT       += core gui sql network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -21,10 +21,13 @@ SOURCES += \
     loginview.cpp \
     main.cpp \
     masterview.cpp \
+    networksync.cpp \
     patienteditview.cpp \
     patientview.cpp \
     recordeditview.cpp \
     recordview.cpp \
+    statisticsview.cpp \
+    statisticsworker.cpp \
     welcomeview.cpp
 
 HEADERS += \
@@ -39,10 +42,13 @@ HEADERS += \
     idatabase.h \
     loginview.h \
     masterview.h \
+    networksync.h \
     patienteditview.h \
     patientview.h \
     recordeditview.h \
     recordview.h \
+    statisticsview.h \
+    statisticsworker.h \
     welcomeview.h
 
 FORMS += \
@@ -60,6 +66,7 @@ FORMS += \
     patientview.ui \
     recordeditview.ui \
     recordview.ui \
+    statisticsview.ui \
     welcomeview.ui
 
 # Default rules for deployment.

@@ -34,7 +34,7 @@ void IDatabase::ininDatabase()
 
     // 创建处方明细表（用于存储就诊时的药品处方信息）
     query.exec("CREATE TABLE IF NOT EXISTS prescriptions ("
-               "id INTEGER PRIMARY KEY, "
+               "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                "record_id VARCHAR(50), "
                "drug_name VARCHAR(50) NOT NULL, "
                "quantity INTEGER NOT NULL, "
@@ -465,6 +465,101 @@ QString IDatabase::getDoctorNameById(int doctorId)
         return query.value("NAME").toString();
     }
     return "";
+}
+
+// 统计功能实现
+
+int IDatabase::getTodayPatientCount()
+{
+    QSqlQuery query;
+    query.exec("SELECT COUNT(*) FROM MedicalRecord WHERE DATE(VISIT_DATE) = DATE('now', 'localtime')");
+    if (query.next()) {
+        return query.value(0).toInt();
+    }
+    return 0;
+}
+
+int IDatabase::getMonthPatientCount()
+{
+    QSqlQuery query;
+    query.exec("SELECT COUNT(*) FROM MedicalRecord WHERE strftime('%Y-%m', VISIT_DATE) = strftime('%Y-%m', 'now', 'localtime')");
+    if (query.next()) {
+        return query.value(0).toInt();
+    }
+    return 0;
+}
+
+int IDatabase::getTodayAppointmentCount()
+{
+    QSqlQuery query;
+    query.exec("SELECT COUNT(*) FROM appointments WHERE DATE(appoint_date) = DATE('now', 'localtime')");
+    if (query.next()) {
+        return query.value(0).toInt();
+    }
+    return 0;
+}
+
+int IDatabase::getMonthAppointmentCount()
+{
+    QSqlQuery query;
+    query.exec("SELECT COUNT(*) FROM appointments WHERE strftime('%Y-%m', appoint_date) = strftime('%Y-%m', 'now', 'localtime')");
+    if (query.next()) {
+        return query.value(0).toInt();
+    }
+    return 0;
+}
+
+double IDatabase::getTodayRevenue()
+{
+    QSqlQuery query;
+    query.exec("SELECT COALESCE(SUM(p.quantity * p.unit_price), 0) FROM prescriptions p "
+               "WHERE DATE(p.prescribed_at) = DATE('now', 'localtime')");
+    if (query.next()) {
+        return query.value(0).toDouble();
+    }
+    return 0.0;
+}
+
+QVariantMap IDatabase::getDailyStatistics()
+{
+    QVariantMap stats;
+
+    stats["todayPatients"] = getTodayPatientCount();
+    stats["todayAppointments"] = getTodayAppointmentCount();
+    stats["todayRevenue"] = getTodayRevenue();
+
+    // 药品使用统计
+    QSqlQuery query;
+    query.exec("SELECT COUNT(*) FROM prescriptions WHERE DATE(prescribed_at) = DATE('now', 'localtime')");
+    if (query.next()) {
+        stats["todayPrescriptions"] = query.value(0).toInt();
+    }
+
+    return stats;
+}
+
+QVariantMap IDatabase::getMonthlyStatistics()
+{
+    QVariantMap stats;
+
+    stats["monthPatients"] = getMonthPatientCount();
+    stats["monthAppointments"] = getMonthAppointmentCount();
+
+    // 药品统计
+    QSqlQuery query;
+    query.exec("SELECT COUNT(*) FROM prescriptions WHERE strftime('%Y-%m', prescribed_at) = strftime('%Y-%m', 'now', 'localtime')");
+    if (query.next()) {
+        stats["monthPrescriptions"] = query.value(0).toInt();
+    }
+
+    // 收入统计
+    query.exec("SELECT COALESCE(SUM(p.quantity * p.unit_price), 0) FROM prescriptions p "
+               "WHERE strftime('%Y-%m', p.prescribed_at) = strftime('%Y-%m', 'now', 'localtime')");
+    if (query.next()) {
+        stats["monthRevenue"] = query.value(0).toDouble();
+    }
+
+    return stats;
 }
 
 QString IDatabase::userLogin(QString userName, QString password)

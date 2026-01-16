@@ -28,6 +28,8 @@ private slots:
 
     void on_btAppointment_clicked();
 
+    void on_btStatistics_clicked();
+
 signals:
     void goDepartmentView();
     void goDoctorView();
@@ -35,6 +37,7 @@ signals:
     void goRecordView();
     void goDrugView();
     void goAppointmentView();
+    void goStatisticsView();
 
 private:
     Ui::WelcomeView *ui;

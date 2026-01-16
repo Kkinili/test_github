@@ -102,6 +102,15 @@ public:
     // 获取医生名称（用于显示）
     QString getDoctorNameById(int doctorId);
 
+    // 统计功能
+    int getTodayPatientCount();            // 今日就诊人数
+    int getMonthPatientCount();            // 本月就诊人数
+    int getTodayAppointmentCount();        // 今日预约数
+    int getMonthAppointmentCount();        // 本月预约数
+    double getTodayRevenue();              // 今日收入
+    QVariantMap getDailyStatistics();      // 每日统计
+    QVariantMap getMonthlyStatistics();    // 每月统计
+
 };
 
 #endif // IDATABASE_H

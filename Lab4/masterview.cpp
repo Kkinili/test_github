@@ -42,6 +42,7 @@ void MasterView::goWelcomeView()
     connect(welcomeView, SIGNAL(goRecordView()), this, SLOT(goRecordView()));
     connect(welcomeView, SIGNAL(goDrugView()), this, SLOT(goDrugView()));
     connect(welcomeView, SIGNAL(goAppointmentView()), this, SLOT(goAppointmentView()));
+    connect(welcomeView, SIGNAL(goStatisticsView()), this, SLOT(goStatisticsView()));
 }
 
 void MasterView::goDoctorView()
@@ -153,6 +154,13 @@ void MasterView::goAppointmentEditView(int rowNo)
     connect(appointmentEditView, SIGNAL(goPreviousView()), this, SLOT(goPreviousView()));
     // 连接创建就诊记录信号
     connect(appointmentEditView, SIGNAL(goCreateRecordView(int)), this, SLOT(goRecordEditView(int)));
+}
+
+void MasterView::goStatisticsView()
+{
+    qDebug() << "goStatisticsView";
+    statisticsView = new StatisticsView(this);
+    pushWidgetToStackView(statisticsView);
 }
 
 void MasterView::goPreviousView()
