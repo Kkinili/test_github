@@ -98,3 +98,4 @@ void RecordView::on_tableView_doubleClicked(const QModelIndex &index)
     // 双击进入编辑页面
     emit goRecordEditView(index.row());
 }
+//1
