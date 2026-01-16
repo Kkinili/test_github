@@ -12,11 +12,33 @@ void IDatabase::ininDatabase()
     }else
         qDebug() << "open database is ok";
 
+    // 创建药品库存表
+    QSqlQuery query;
+    query.exec("CREATE TABLE IF NOT EXISTS drug_inventory ("
+               "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+               "name VARCHAR(50) NOT NULL, "
+               "category VARCHAR(20), "
+               "stock_qty INTEGER DEFAULT 0, "
+               "unit_price DECIMAL(10,2), "
+               "manufacturer VARCHAR(50), "
+               "expiry_date DATE)");
+
+    // 创建预约表
+    query.exec("CREATE TABLE IF NOT EXISTS appointments ("
+               "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+               "patient_id INTEGER, "
+               "doctor_id INTEGER, "
+               "appoint_date DATETIME, "
+               "status VARCHAR(20), "
+               "notes TEXT)");
+
     // 初始化所有数据模型
     initPatientModel();
     initDoctorModel();
     initDepartmentModel();
     initRecordModel();
+    initDrugModel();
+    initAppointmentModel();
 }
 
 
@@ -280,6 +302,136 @@ bool IDatabase::submitRecordEdit()
 void IDatabase::revertRecordEdit()
 {
     recordTabModel->revertAll();
+}
+
+// ==================== 药品库存管理模块实现 ====================
+
+bool IDatabase::initDrugModel()
+{
+    drugTabModel = new QSqlTableModel(this, database);
+    drugTabModel->setTable("drug_inventory");
+    drugTabModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    drugTabModel->setSort(drugTabModel->fieldIndex("NAME"), Qt::AscendingOrder);
+    if(!(drugTabModel->select()))
+        return false;
+
+    theDrugSelection = new QItemSelectionModel(drugTabModel);
+    return true;
+}
+
+int IDatabase::addNewDrug()
+{
+    drugTabModel->insertRow(drugTabModel->rowCount(), QModelIndex());
+    QModelIndex curIndex = drugTabModel->index(drugTabModel->rowCount() - 1, 1);
+
+    int curRecNo = curIndex.row();
+    QSqlRecord curRec = drugTabModel->record(curRecNo);
+    // 设置默认库存为0
+    curRec.setValue("stock_qty", 0);
+
+    drugTabModel->setRecord(curRecNo, curRec);
+
+    return curIndex.row();
+}
+
+bool IDatabase::searchDrug(QString filter)
+{
+    drugTabModel->setFilter(filter);
+    return drugTabModel->select();
+}
+
+bool IDatabase::deleteCurrentDrug()
+{
+    if (!theDrugSelection || !theDrugSelection->currentIndex().isValid()) {
+        qDebug() << "未选中任何药品，无法删除";
+        return false;
+    }
+
+    QModelIndex curIndex = theDrugSelection->currentIndex();
+    if (drugTabModel->removeRow(curIndex.row())) {
+        drugTabModel->submitAll();
+        drugTabModel->select();
+        qDebug() << "删除药品成功";
+        return true;
+    } else {
+        qDebug() << "删除药品失败";
+        return false;
+    }
+}
+
+bool IDatabase::submitDrugEdit()
+{
+    return drugTabModel->submitAll();
+}
+
+void IDatabase::revertDrugEdit()
+{
+    drugTabModel->revertAll();
+}
+
+// ==================== 预约排班管理模块实现 ====================
+
+bool IDatabase::initAppointmentModel()
+{
+    appointmentTabModel = new QSqlTableModel(this, database);
+    appointmentTabModel->setTable("appointments");
+    appointmentTabModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    appointmentTabModel->setSort(appointmentTabModel->fieldIndex("appoint_date"), Qt::DescendingOrder);
+    if(!(appointmentTabModel->select()))
+        return false;
+
+    theAppointmentSelection = new QItemSelectionModel(appointmentTabModel);
+    return true;
+}
+
+int IDatabase::addNewAppointment()
+{
+    appointmentTabModel->insertRow(appointmentTabModel->rowCount(), QModelIndex());
+    QModelIndex curIndex = appointmentTabModel->index(appointmentTabModel->rowCount() - 1, 1);
+
+    int curRecNo = curIndex.row();
+    QSqlRecord curRec = appointmentTabModel->record(curRecNo);
+    // 设置默认状态为待就诊
+    curRec.setValue("status", "待就诊");
+
+    appointmentTabModel->setRecord(curRecNo, curRec);
+
+    return curIndex.row();
+}
+
+bool IDatabase::searchAppointment(QString filter)
+{
+    appointmentTabModel->setFilter(filter);
+    return appointmentTabModel->select();
+}
+
+bool IDatabase::deleteCurrentAppointment()
+{
+    if (!theAppointmentSelection || !theAppointmentSelection->currentIndex().isValid()) {
+        qDebug() << "未选中任何预约，无法删除";
+        return false;
+    }
+
+    QModelIndex curIndex = theAppointmentSelection->currentIndex();
+    if (appointmentTabModel->removeRow(curIndex.row())) {
+        appointmentTabModel->submitAll();
+        appointmentTabModel->select();
+        qDebug() << "删除预约成功";
+        return true;
+    } else {
+        qDebug() << "删除预约失败";
+        return false;
+    }
+}
+
+bool IDatabase::submitAppointmentEdit()
+{
+    return appointmentTabModel->submitAll();
+}
+
+void IDatabase::revertAppointmentEdit()
+{
+    appointmentTabModel->revertAll();
 }
 
 QString IDatabase::getPatientNameById(int patientId)

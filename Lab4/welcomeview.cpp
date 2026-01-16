@@ -39,3 +39,13 @@ void WelcomeView::on_btRecord_clicked()
     emit goRecordView();
 }
 
+void WelcomeView::on_btDrug_clicked()
+{
+    emit goDrugView();
+}
+
+void WelcomeView::on_btAppointment_clicked()
+{
+    emit goAppointmentView();
+}
+

@@ -72,13 +72,35 @@ public:
     bool submitRecordEdit();
     void revertRecordEdit();
 
+    QSqlTableModel  *recordTabModel;
+    QItemSelectionModel *theRecordSelection;
+
+    // 药品库存管理
+    bool initDrugModel();
+    int addNewDrug();
+    bool searchDrug(QString filter);
+    bool deleteCurrentDrug();
+    bool submitDrugEdit();
+    void revertDrugEdit();
+
+    QSqlTableModel  *drugTabModel;
+    QItemSelectionModel *theDrugSelection;
+
+    // 预约排班管理
+    bool initAppointmentModel();
+    int addNewAppointment();
+    bool searchAppointment(QString filter);
+    bool deleteCurrentAppointment();
+    bool submitAppointmentEdit();
+    void revertAppointmentEdit();
+
+    QSqlTableModel  *appointmentTabModel;
+    QItemSelectionModel *theAppointmentSelection;
+
     // 获取患者名称（用于显示）
     QString getPatientNameById(int patientId);
     // 获取医生名称（用于显示）
     QString getDoctorNameById(int doctorId);
-
-    QSqlTableModel  *recordTabModel;
-    QItemSelectionModel *theRecordSelection;
 
 };
 

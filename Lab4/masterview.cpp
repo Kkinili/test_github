@@ -1,6 +1,7 @@
 #include "masterview.h"
 #include "ui_masterview.h"
 #include <QDebug>
+#include <QApplication>
 #include "idatabase.h"
 
 MasterView::MasterView(QWidget *parent)
@@ -39,6 +40,8 @@ void MasterView::goWelcomeView()
     connect(welcomeView, SIGNAL(goPatientView()), this, SLOT(goPatientView()));
     connect(welcomeView, SIGNAL(goDepartmentView()), this, SLOT(goDepartmentView()));
     connect(welcomeView, SIGNAL(goRecordView()), this, SLOT(goRecordView()));
+    connect(welcomeView, SIGNAL(goDrugView()), this, SLOT(goDrugView()));
+    connect(welcomeView, SIGNAL(goAppointmentView()), this, SLOT(goAppointmentView()));
 }
 
 void MasterView::goDoctorView()
@@ -113,6 +116,42 @@ void MasterView::goRecordEditView(int rowNo)
     connect(recordEditView, SIGNAL(goPreviousView()), this, SLOT(goPreviousView()));
 }
 
+void MasterView::goDrugView()
+{
+    qDebug()<<"goDrugView";
+    drugView = new DrugView(this);
+    pushWidgetToStackView(drugView);
+
+    connect(drugView, SIGNAL(goDrugEditView(int)), this, SLOT(goDrugEditView(int)));
+}
+
+void MasterView::goDrugEditView(int rowNo)
+{
+    qDebug()<<"goDrugEditView";
+    drugEditView = new DrugEditView(this, rowNo);
+    pushWidgetToStackView(drugEditView);
+
+    connect(drugEditView, SIGNAL(goPreviousView()), this, SLOT(goPreviousView()));
+}
+
+void MasterView::goAppointmentView()
+{
+    qDebug()<<"goAppointmentView";
+    appointmentView = new AppointmentView(this);
+    pushWidgetToStackView(appointmentView);
+
+    connect(appointmentView, SIGNAL(goAppointmentEditView(int)), this, SLOT(goAppointmentEditView(int)));
+}
+
+void MasterView::goAppointmentEditView(int rowNo)
+{
+    qDebug()<<"goAppointmentEditView";
+    appointmentEditView = new AppointmentEditView(this, rowNo);
+    pushWidgetToStackView(appointmentEditView);
+
+    connect(appointmentEditView, SIGNAL(goPreviousView()), this, SLOT(goPreviousView()));
+}
+
 void MasterView::goPreviousView()
 {
     qDebug() << "goPreviousView 被调用";
@@ -121,17 +160,24 @@ void MasterView::goPreviousView()
 
     if(count > 1){
         qDebug() << "切换到上一个界面";
+
+        // 先切换到上一个界面
         ui->stackedWidget->setCurrentIndex(count - 2);
         ui->labelTitle->setText(ui->stackedWidget->currentWidget()->windowTitle());
 
+        // 删除当前的编辑界面
         QWidget *widget = ui->stackedWidget->widget(count - 1);
         ui->stackedWidget->removeWidget(widget);
-        delete widget;
+        widget->deleteLater();
 
-        // 刷新当前视图（如果有的话）
-        if (ui->stackedWidget->currentWidget()) {
-            ui->stackedWidget->currentWidget()->repaint();
-        }
+        // 强制刷新整个界面
+        this->repaint();
+        this->update();
+
+        // 强制处理待处理的事件
+        QApplication::processEvents();
+
+        qDebug() << "界面切换完成";
     } else {
         qDebug() << "堆栈中只有一个widget，无法返回";
     }
