@@ -56,6 +56,9 @@ void RecordView::initDbView()
     ui->tableView->setSelectionMode(QTableView::SingleSelection);
     ui->tableView->setSelectionBehavior(QTableView::SelectRows);
 
+    // 设置选择模型（重要：否则单击无法选中记录）
+    ui->tableView->setSelectionModel(IDatabase::getInstance().theRecordSelection);
+
     // 为STATUS列设置自定义委托，显示文本而非数字
     QSqlTableModel *model = IDatabase::getInstance().recordTabModel;
     int statusCol = model->fieldIndex("STATUS");
@@ -84,8 +87,15 @@ void RecordView::on_btDelete_clicked()
 
 void RecordView::on_btSearch_clicked()
 {
-    QString filter = ui->dbEditSearch->text();
-    IDatabase::getInstance().searchRecord(filter);
+    QString searchText = ui->dbEditSearch->text();
+    if (searchText.isEmpty()) {
+        // 如果搜索框为空，显示所有记录
+        IDatabase::getInstance().searchRecord("");
+    } else {
+        // PATIENT_ID 是整数类型，使用 CAST 转换为文本后模糊匹配
+        QString filter = QString("CAST(PATIENT_ID AS TEXT) LIKE '%%1%'").arg(searchText);
+        IDatabase::getInstance().searchRecord(filter);
+    }
 }
 
 void RecordView::on_tableView_clicked(const QModelIndex &index)
@@ -98,4 +108,3 @@ void RecordView::on_tableView_doubleClicked(const QModelIndex &index)
     // 双击进入编辑页面
     emit goRecordEditView(index.row());
 }
-//1
